@@ -5,8 +5,19 @@ const User = require("../models/User")
 
 const router = express.Router()
 
+//CRUD - Authentification :
+//  - POST /auth/register (hash bcrypt).
+//  - POST /auth/login (JWT).
+//  - Middleware requireAuth (protection des routes).
 
 // stackoverflow.com/questions/9203532/how-to-document-express-js-api-using-swagger
+
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: User registration
+*/
 router.post("/register", async (req, res) => {
   const { email, password } = req.body
   const exist = await User.findOne({ email })
@@ -18,6 +29,12 @@ router.post("/register", async (req, res) => {
   res.json({ msg: "ok" })
 })
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: User login
+*/
 router.post("/login", async (req, res) => {
   const { email, password } = req.body
   const u = await User.findOne({ email })
