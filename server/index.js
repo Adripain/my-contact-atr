@@ -31,7 +31,7 @@ app.get("/protected", requireAuth, (req, res) => {
 })
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log("server running")
+  console.log("server running on port", process.env.PORT || 3000)
 })
 
 //https://www.npmjs.com/package/swagger-jsdoc

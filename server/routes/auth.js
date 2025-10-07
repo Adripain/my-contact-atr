@@ -20,13 +20,19 @@ const router = express.Router()
 */
 router.post("/register", async (req, res) => {
   const { email, password } = req.body
-  const exist = await User.findOne({ email })
-  if (exist) return res.status(400).json({ error: "déjà inscrit" })
+  if (!email || !password) {
+    return res.status(400).json({ error: "missing email or password" })
+  }
 
-  const hash = await bcrypt.hash(password, 10)
-  const u = new User({ email, password: hash })
-  await u.save()
-  res.json({ msg: "ok" })
+  const existingUser = await User.findOne({ email })
+  if (existingUser) {
+    return res.status(400).json({ error: "email already in use" })
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10)
+  const newUser = new User({ email, password: hashedPassword })
+  await newUser.save()
+  res.status(201).json({ msg: "user created" })
 })
 
 /**
@@ -37,18 +43,26 @@ router.post("/register", async (req, res) => {
 */
 router.post("/login", async (req, res) => {
   const { email, password } = req.body
-  const u = await User.findOne({ email })
-  if (!u) return res.status(400).json({ error: "not found" })
+  if (!email || !password) {
+    return res.status(400).json({ error: "missing email or password" })
+  }
 
-  const valid = await bcrypt.compare(password, u.password)
-  if (!valid) return res.status(400).json({ error: "wrong pass" })
+  const user = await User.findOne({ email })
+  if (!user) {
+    return res.status(400).json({ error: "invalid credentials" })
+  }
 
-  const token = jwt.sign({ id: u._id }, process.env.JWT_SECRET, { expiresIn: "1h" })
+  const isPasswordValid = await bcrypt.compare(password, user.password)
+  if (!isPasswordValid) {
+    return res.status(400).json({ error: "invalid credentials" })
+  }
+
+  const token = jwt.sign(
+    { userId: user._id, email: user.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" }
+  )
   res.json({ token })
 })
 
 module.exports = router
-
-router.get('/', function(req, res) {
-  res.send('respond with a resource');
-});

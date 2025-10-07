@@ -8,7 +8,7 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch("http://localhost:5000/auth/login", {
+        const response = await fetch("http://localhost:3000/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -16,9 +16,10 @@ function Login() {
             body: JSON.stringify({ email, password }),
         });
         const data = await response.json();
-        if (response.ok) {
+        //la reponse est le token de connexion jwt
+        if (response.status === 200 && data.token) {
             alert("Login successful");
-            // Handle successful login (e.g., store token, redirect)
+
         } else {
             alert(data.error || "Login failed");
         }

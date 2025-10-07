@@ -17,7 +17,7 @@ module.exports = router
  *   get:
  *     summary: Retrieve a list of contacts
 */
-router.get('/contacts' , function(req, res) {
+router.get('/contacts' , async function(req, res) {
     const contacts = await Contact.find();
     res.json(contacts);
 });
