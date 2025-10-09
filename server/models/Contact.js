@@ -5,3 +5,5 @@ const contactSchema = new mongoose.Schema({
     lastName: { type: String, required: true },
     phone: { type: String },
 })
+
+module.exports = mongoose.model("Contact", contactSchema)
