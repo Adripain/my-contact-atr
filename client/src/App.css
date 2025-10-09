@@ -36,3 +36,103 @@
     transform: rotate(360deg);
   }
 }
+
+/* App.css */
+
+/* Reset et fond */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* Header / menu en haut */
+header {
+  display: flex;
+  justify-content: center; /* centrer horizontalement */
+  gap: 20px;               /* espace entre les liens */
+  background-color: #fff;
+  padding: 15px 0;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+header a {
+  text-decoration: none;
+  color: #007BFF;
+  font-weight: bold;
+}
+
+header a:hover {
+  text-decoration: underline;
+}
+
+/* Titres */
+h2, h3 {
+  text-align: center;
+  color: #222;
+}
+
+/* Liste contacts */
+ul {
+  list-style: none;
+  padding-left: 0;
+  max-width: 600px;
+  margin: 20px auto; /* centrer horizontalement */
+}
+
+li {
+  background-color: #fff;
+  margin-bottom: 8px;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Boutons */
+button {
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-left: 5px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 3px;
+  font-size: 0.9rem;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Formulaire ajouter contact centré */
+form {
+  margin: 30px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+form button {
+  background-color: #007BFF;
+  color: #fff;
+}
+
+form button:hover {
+  background-color: #0069d9;
+}

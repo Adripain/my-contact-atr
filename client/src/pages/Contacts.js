@@ -7,6 +7,12 @@ function Contacts() {
   const [phone, setPhone] = useState("");
 
   useEffect(() => {
+    const email = localStorage.getItem("email");
+    if (!email) {
+      alert("Vous devez être connecté pour accéder à vos contacts !");
+      window.location.href = "/login";
+      return;
+    }
     fetchContacts();
   }, []);
 
@@ -14,39 +20,53 @@ function Contacts() {
     try {
       const res = await fetch("http://localhost:3000/api/contacts");
       const data = await res.json();
-      setContacts(data);
+      setContacts(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Erreur fetch contacts:", err);
+      setContacts([]);
     }
   };
 
   const addContact = async (e) => {
     e.preventDefault();
-    await fetch("http://localhost:3000/api/contacts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ firstName, lastName, phone }),
-    });
-    setFirstName("");
-    setLastName("");
-    setPhone("");
-    fetchContacts();
+    try {
+      const res = await fetch("http://localhost:3000/api/contacts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName, phone }),
+      });
+      const data = await res.json();
+      setFirstName("");
+      setLastName("");
+      setPhone("");
+      fetchContacts();
+    } catch (err) {
+      console.error("Erreur ajout contact:", err);
+    }
   };
 
   const deleteContact = async (id) => {
-    await fetch(`http://localhost:3000/api/contacts/${id}`, { method: "DELETE" });
-    fetchContacts();
+    try {
+      await fetch(`http://localhost:3000/api/contacts/${id}`, { method: "DELETE" });
+      fetchContacts();
+    } catch (err) {
+      console.error("Erreur suppression contact:", err);
+    }
   };
 
   const updateContact = async (id) => {
     const newPhone = prompt("Nouveau numéro ?");
     if (!newPhone) return;
-    await fetch(`http://localhost:3000/api/contacts/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: newPhone }),
-    });
-    fetchContacts();
+    try {
+      await fetch(`http://localhost:3000/api/contacts/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: newPhone }),
+      });
+      fetchContacts();
+    } catch (err) {
+      console.error("Erreur mise à jour contact:", err);
+    }
   };
 
   return (

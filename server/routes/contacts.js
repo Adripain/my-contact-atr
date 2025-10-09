@@ -1,5 +1,6 @@
 const express = require("express")
 const Contact = require("../models/Contact")
+const requireAuth = require("../middleware/requireAuth"); // ton middleware JWT
 
 const router = express.Router()
 
