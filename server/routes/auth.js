@@ -14,9 +14,30 @@ const router = express.Router()
 
 /**
  * @swagger
- * /register:
- *   post:
- *     summary: User registration
+  * /register:
+  *  post:
+  *   summary: Register a new user
+  *  requestBody:
+  *   required: true
+  *  content:
+  *    application/json:
+  *    schema:
+  *    type: object
+  *    properties:
+  *    email:
+  *    type: string
+  *   example:
+  *    email:
+  *   type: string
+  *   password:
+  *  type: string
+  *  example:
+  *   password: mypassword
+  * responses:
+  * 201:
+  *   description: User created successfully
+  * 400:
+  *   description: Bad request (e.g., missing fields, email already in use)
 */
 router.post("/register", async (req, res) => {
   const { email, password } = req.body
@@ -38,8 +59,37 @@ router.post("/register", async (req, res) => {
 /**
  * @swagger
  * /login:
- *   post:
- *     summary: User login
+ *  post:
+ *  summary: Login a user
+ * requestBody:
+ *  required: true
+ * content:
+ *   application/json:
+ *   schema:
+ *   type: object
+ *  properties:
+ *  email:
+ *  type: string
+ *  example:
+ *  email:
+ * type: string
+ * password:
+ * type: string
+ * example:
+ * password: mypassword
+ * responses:
+ * 200:
+ * description: Login successful, returns JWT token
+ * content:
+ * application/json:
+ * schema:
+ * type: object
+ * properties:
+ * token:
+ * type: string
+ * example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ * 400:
+ * description: Invalid credentials or missing fields
 */
 router.post("/login", async (req, res) => {
   const { email, password } = req.body
